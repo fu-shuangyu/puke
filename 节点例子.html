@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>扑克牌</title>
+<style type="text/css">
+    body{
+        background: #09355C;
+    }
+    #zhuozi{
+        width: 700px;
+        height: 400px;
+        position: absolute;
+        left: 50%;
+        margin-left: -300px;
+        top: 0;
+        background: url(./bg.png) no-repeat;
+        background-size: cover;
+    }
+    div#wo,div#ni,div#ta{
+        width: 600px;
+        height: 200px;
+        position: absolute;
+        left: 50%;
+        margin-left: -250px;
+        bottom: 30px;
+        overflow: hidden;
+        padding-left: 40px;
+        box-sizing: border-box;
+        padding-top: 50px;
+        background: #09355C;
+    }
+    div#ni{
+        position: absolute;
+        left: 150px;
+        top: 220px;
+        transform-origin: center center;
+        transform:rotateZ(90deg);
+    }
+    div#ta{
+        position: absolute;
+        left: 1180px;
+        top: 220px;
+        transform-origin: center center;
+        transform:rotateZ(-90deg);
+    }
+    div.hongtao,div.heitao,div.meihua,div.fangkuai{
+        background-color: #fff;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+        background-position: center center;
+    }
+    div.hongtao{
+        background-image: url(./hongtao.png);
+        color: red;
+    }
+    div.heitao{
+        background-image: url(./黑桃.png);
+        color: #000;
+    }
+    div.fangkuai{
+        background-image: url(./fangkuai.png);
+        color: red;
+    }
+    div.meihua{
+        background-image: url(./meihua.png);
+        color: #000;
+    }
+   .pk{
+        width: 50px;
+        height: 90px;
+        float: left;
+        margin-bottom: 5px;
+        margin-right: 1px;
+        font-size: 20px;
+        margin-left: -25px;
+        border: 1px solid black;
+        box-shadow: 0 0 5px rgba(0,0,0,0.8);
+        border-radius: 5px;
+    }
+    div.beijing{
+        background-image: url(fanmian.png);
+        background-size: 50px 90px;
+        background-repeat: no-repeat;
+        font-size: 0;
+    }
+    div.duidie{
+        position: absolute;
+        left: 50%;
+        top: 30%;
+    }
+    .button{
+        width: 140px;
+        height: 38px;
+        line-height: 38px;
+        text-align: center;
+        font-weight: bold;
+        color: #fff;
+        text-shadow:1px 1px 1px #333;
+        border-radius: 5px;
+        margin:0 20px 20px 0;
+        position: relative;
+        overflow: hidden;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        position: absolute;
+    }
+    .button.red{
+        border:1px solid #b42323;
+        box-shadow: 0 1px 2px #e99494 inset,0 -1px 0 #954b4b inset,0 -2px 3px #e99494 inset;
+        background: -webkit-linear-gradient(top,#d53939,#b92929);
+        background: -moz-linear-gradient(top,#d53939,#b92929);
+        background: linear-gradient(top,#d53939,#b92929);
+    }
+    .round,.side,.tags{
+        padding-right: 30px;
+    }
+    .round:after{
+        position: absolute;
+        display: inline-block;
+        content: "\003c";
+        top:50%;
+        right:10px;
+        margin-top: -10px;
+        width: 17px;
+        height: 20px;
+        padding-left: 3px;
+        line-height:18px;
+        font-size: 10px;
+        font-weight: normal;
+        border-radius: 10px;
+        text-shadow:-2px 0 1px #333;
+        -webkit-transform:rotate(-90deg);
+        -moz-transform:rotate(-90deg); 
+        transform:rotate(-90deg);
+    }
+    .red.round:after{
+        box-shadow:1px 0 1px rgba(255,255,255,.6) inset,1px 0 1px rgba(130,25,25,.9);
+        background:-webkit-linear-gradient(top,#b12222,#b42323);
+        background:-moz-linear-gradient(top,#b12222,#b42323);
+        background:linear-gradient(top,#b12222,#b42323);
+    }
+    .aa{
+        margin-left: -52px;
+    }
+</style>
+</head>
+<body>
+    <!-- <input type="text" name="newsletter" atter="checked:true"> -->
+    <div id="zhuozi"></div>
+    <div id="wo"></div>
+    <div id="ni"></div>
+    <div id="ta"></div>
+    <button type="button" class="button red side" id="btn">Start</button>
+</body>
+<script type="text/javascript">
+    var zhuozi = document.getElementById('zhuozi');
+    var btn = document.getElementById('btn');
+    var wo = document.getElementById('wo');
+    var shengchengpuke = function(){
+        var puke = [];
+        var zidian = {};
+        var huases = ['fangkuai','meihua','heitao','hongtao'];
+        while( puke.length < 52 ){
+            var h = huases[ Math.floor( Math.random()*4 ) ];
+            var s = Math.ceil( Math.random()*13 );
+            if( !zidian[h+s] ){
+                puke.push({huase:h,shuzi:s});
+                zidian[h+s] = true;
+            }
+        }
+        return puke;
+    }
+    var fapai = shengchengpuke();
+    for (var i = 0; i < fapai.length; i++) {
+        var p = document.createElement('div');
+        p.className = fapai[i].huase;
+        p.classList.add('pk');
+        p.classList.add('aa');
+        p.innerHTML = fapai[i].shuzi;
+        zhuozi.appendChild(p);
+    }
+    var cishu = 0;
+    var fa = function(){
+        if( cishu >= 52 ){
+            clearInterval(t);
+            return;
+        }
+        var n = Math.floor(Math.random()*zhuozi.children.length);
+        if( cishu %3 == 0 ){
+            var zhege = parseInt( zhuozi.children[n].innerHTML );
+            var flag = true;
+            for (var i = 0; i < wo.children.length; i++) {
+                var nage = parseInt( wo.children[i].innerHTML );
+                if( zhege > nage ){
+                    wo.insertBefore(zhuozi.children[n],wo.children[i]);
+                    flag = false;
+                    break;
+                }
+            }
+            if( flag ){
+                wo.appendChild(zhuozi.children[n]);
+            }
+        }
+        if( cishu %3 == 1 ){
+            ni.appendChild(zhuozi.children[n]);
+            for (var i = 0; i < ni.children.length; i++) {
+                ni.children[i].classList.add('beijing');
+            }
+        }
+        if( cishu %3 == 2 ){
+            ta.appendChild(zhuozi.children[n]);
+            for (var i = 0; i < ta.children.length; i++) {
+                ta.children[i].classList.add('beijing');
+            }
+        }
+        cishu += 1;
+        for (var i = 0; i < zhuozi.children.length; i++) {
+            zhuozi.children[i].classList.remove('aa');
+        }
+    } 
+
+    var t = null;
+    btn.onclick = function(){
+        t = setInterval(fa,10);
+        btn.style.display = 'none';
+    }
+
+    var pre;
+    var lai = Math.ceil(Math.random()*13);
+    console.log(lai)
+    /*var addEvent = function(){
+         var els = wo.children;
+         Array.prototype.forEach.call(els,function(v){
+            v.onmousedown = function(e){
+                var ev = e||window.event;
+                if(ev.preventDefault){
+                    ev.preventDefault();
+                }else{
+                    ev.returnValue=false;
+                }
+            }
+             v.ondblclick = function(e){
+                    timer && clearTimeout(timer);
+                    pre = null; 
+                     zhuozi.appendChild(this);
+                     setTimeout(function(){
+                         zhuozi.appendChild(ta.lastChild);
+                         for (var i = 0; i < zhuozi.children.length; i++) {
+                             zhuozi.children[i].classList.remove('beijing');
+                         }
+                     },1000);
+                     setTimeout(function(){
+                         zhuozi.appendChild(ni.lastChild);
+                         for (var i = 0; i < zhuozi.children.length; i++) {
+                             zhuozi.children[i].classList.remove('beijing');
+                         }
+                     },2000);
+                     for (var i = 0; i < zhuozi.children.length; i++) {
+                         zhuozi.children[i].style.marginTop = 0+'px';
+                     }
+             }
+             v.onclick = function(event){
+                timer && clearTimeout(timer); 
+                timer = setTimeout(function(){ 
+                   v.style.marginTop = '-10px';
+                       if( pre ){
+                           if( pre.innerHTML == lai){
+                               wo.removeChild(pre);
+                               pre = v.cloneNode(true);
+                           }
+                           wo.insertBefore(pre,v);
+                           for (var i = 0; i < els.length; i++) {
+                               els[i].style.marginTop = "0px";
+                           }
+                           pre = null;
+                       }else{
+                           pre = v;
+                       } 
+                },300); 
+                
+             }            
+        })
+    }*/
+    var chulie = function(e){
+        var ev = e || window.event;
+        var target = ev.srcElement || ev.target;
+        if(target == this) {return;}
+        if( pre ){
+            if( pre.innerHTML == lai){
+                wo.removeChild(pre);
+                pre = target.cloneNode(true);
+            }
+            wo.insertBefore(pre,target);
+            pre = null;
+            for (var i = 0; i < wo.children.length; i++) {
+                wo.children[i].style.marginTop = "0px";
+            }
+        }else{
+            pre = target;
+        } 
+        if(target == this) {return;}
+        target.style.marginTop = '-10px';
+        target.setAttribute('chu','true');
+    }
+    var taiqi = function(e){
+        var ev = e||window.event;
+        if(ev.preventDefault){
+            ev.preventDefault();
+        }else{
+            ev.returnValue=false;
+        }
+        var target = ev.srcElement || ev.target;
+        if(target == this) {return;}
+        target.style.marginTop = '-10px';
+        target.setAttribute('chu','true');
+    }
+    wo.addEventListener('click',chulie,false);
+    wo.addEventListener('mousedown',function(e){
+        wo.addEventListener('mousemove',taiqi,false);
+    },false);
+    var aa = function(){
+        var els = wo.querySelectorAll('div[chu]');
+        console.log(els);
+        for (var i = 0; i < els.length; i++) {
+            zhuozi.appendChild( els[i] );
+        }
+        setTimeout(function(){
+            for (var i = 0; i < els.length; i++) {
+                zhuozi.appendChild(ta.lastChild);
+            }
+            for (var i = 0; i < zhuozi.children.length; i++) {
+                zhuozi.children[i].classList.remove('beijing');
+            }
+        },1000);
+        setTimeout(function(){
+            for (var i = 0; i < els.length; i++) {
+                zhuozi.appendChild(ni.lastChild);
+            }
+            for (var i = 0; i < zhuozi.children.length; i++) {
+                zhuozi.children[i].classList.remove('beijing');
+            }
+        },2000);
+        for (var i = 0; i < zhuozi.children.length; i++) {
+            zhuozi.children[i].style.marginTop = '0px';
+        }
+    }
+    var chupai = new Event( 'chupai' );
+    wo.addEventListener( 'chupai',aa,false);
+    wo.addEventListener( 'mouseup',function(){
+        wo.removeEventListener( 'mousemove',taiqi,false);
+        zhuozi.addEventListener( 'click',function(){
+            wo.dispatchEvent( chupai );
+        },false);
+    },false);
+    
+</script>
+</html>
